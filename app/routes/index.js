@@ -2,6 +2,9 @@
 
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var PollHandler = require(path + '/app/controllers/PollHandler.server.js');
+var bodyParser = require('body-parser');
+
 
 module.exports = function (app, passport) {
 
@@ -14,9 +17,35 @@ module.exports = function (app, passport) {
 	}
 
 	var clickHandler = new ClickHandler();
+	var pollHandler = new PollHandler();
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+
+	app.route('/api/addPoll')
+		.post(function (req, res) {
+			console.log(req.body.question);
+			console.log(req.body.choice);
+			res.json(req.body);
+			//res.json("Helloooooooo");
+		});
+
+
+	app.route('/polls')
+		.get(function (req, res) {
+			res.sendFile(path + '/public/polls.html');
+		});
+
+	app.route('/addpoll')
+		.post(pollHandler.addPoll);
+
+	app.route('/api/getAllPolls')
+		.get(pollHandler.getAllPolls);
+///////////////////////////////////////////////////
 
 	app.route('/')
-		.get(isLoggedIn, function (req, res) {
+		.get(function (req, res) {
 			res.sendFile(path + '/public/index.html');
 		});
 

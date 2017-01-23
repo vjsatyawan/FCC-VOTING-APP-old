@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Polls Page</title>
+
+    <!-- Bootstrap -->
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+
+
+<div class="container">
+    <form class="form-inline col-sm-1" action="/addpoll" method="POST">
+  <div class="form-group">
+    <label for="id">Id</label>
+    <input type="text" class="form-control" id="id" name="id" placeholder="Id">
+  </div>
+  <div class="form-group">
+    <label for="credatedBy">Credated By</label>
+    <input type="text" class="form-control" id="credatedBy" name="credatedBy" placeholder="Credated By">
+  </div>
+  <div class="form-group">
+    <label for="question">Question</label>
+    <input type="text" class="form-control" id="question" name="question"  placeholder="Question">
+  </div>
+  <div class="form-group">
+    <label for="answers">Answer</label>
+    <input type="text" class="form-control" id="answers" name="answers" placeholder="answer">
+  </div>
+
+  <button type="submit" class="btn btn-default">Add Poll</button>
+</form>
+</div>
+
+
+
+<div id="polls" class="form-inline col-sm-12">
+
+  
+</div>
+
+
+
+    <script type="text/javascript" src="common/ajax-functions.js"></script>
+    <script type="text/javascript" src="public/js/pollController.client.js"></script>
+  </body>
+</html>
