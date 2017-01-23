@@ -16,16 +16,26 @@ var ajaxFunctions = {
    ajaxRequest: function ajaxRequest (method, url, data, callback) {
       var xmlhttp = new XMLHttpRequest();
 
-      console.log("1"+data)
+      console.log("1"+data);
+      xmlhttp.open(method, url, true);
+      xmlhttp.setRequestHeader("Content-Type", "application/json");
+      xmlhttp.send(data);
+
       xmlhttp.onreadystatechange = function () {
          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             callback(xmlhttp.response);
+            return xmlhttp.response;
+            console.log("xmlhttp.response 1: "+xmlhttp.response);
          }
+
+            console.log("xmlhttp.response 2: "+xmlhttp.response);
+         return xmlhttp.response;
+
+            console.log("xmlhttp.response 3: "+xmlhttp.response);
       };
 
-      xmlhttp.open(method, url, true);
-      console.log("2"+JSON.stringify(data));
-      xmlhttp.setRequestHeader("Content-Type", "application/json");
-      xmlhttp.send(data);
+
+
+
    }
 };

@@ -18,7 +18,6 @@ class NewPoll extends React.Component {
 
                 ajaxFunctions.ajaxRequest('POST', 'api/addPoll',JSON.stringify(formData), this.dataView);
 
-                this.Form = "";
 
         }
 
@@ -106,7 +105,7 @@ class Choices extends React.Component {
    render() {
       return (
          <div>
-             <Form.Checkbox name="choice" label={this.props.componentData.item} name='choice' value={this.props.componentData.item} checked/>
+             <Form.Checkbox label={this.props.componentData.item} name='choice' value={this.props.componentData.item} checked/>
          </div>
       );
    }

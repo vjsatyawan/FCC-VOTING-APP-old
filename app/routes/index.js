@@ -24,12 +24,13 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 
 	app.route('/api/addPoll')
-		.post(function (req, res) {
-			console.log(req.body.question);
-			console.log(req.body.choice);
-			res.json(req.body);
-			//res.json("Helloooooooo");
-		});
+			.post(pollHandler.addPoll);
+		// .post(function (req, res) {
+		// 	console.log(req.body.question);
+		// 	console.log(req.body.choice);
+		// 	res.json(req.body);
+		// 	//res.json("Helloooooooo");
+		// });
 
 
 	app.route('/polls')
@@ -39,6 +40,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 	app.route('/addpoll')
 		.post(pollHandler.addPoll);
+
+	app.route('/api/updatePoll')
+		.post(pollHandler.updatePoll);
+
 
 	app.route('/api/getAllPolls')
 		.get(pollHandler.getAllPolls);

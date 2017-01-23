@@ -1,4 +1,4 @@
-import { List, Grid, Button, Header,Icon, Modal, Message, Form} from 'semantic-ui-react'
+import { List, Grid, Button, Header,Icon, Modal, Message, Form, Divider, Segment} from 'semantic-ui-react'
 import React from 'react';
 
 class Content extends React.Component {
@@ -6,40 +6,9 @@ class Content extends React.Component {
       super();
       
       this.state = {
-         data: 
-         [
-            {
-               id: 1,
-               createdBy: 'abc xyz',
-               question: 'Dhoni Or Yuvi',
-               answers: [
-                           {
-                              text: 'answer 1',
-                              value: 'Value 1'
-                           },
-                          {
-                              text: 'answer 2',
-                              value: 'vakue 2'
-                           }
-                  ]
-            },
-            
-            {
-               id: 2,
-               createdBy: 'def xyz',
-               question: 'Modi or Kejri ?',
-               answers: [
-                           {
-                              text: 'answer 3',
-                              value: 'vakue 3'
-                           },
-                          {
-                              text: 'answer 4',
-                              value: 'value 4'
-                           }
-                  ]
-            },
-            
+         data:[
+
+           
             {
                id: 3,
                createdBy: 'ghi xyz?',
@@ -55,10 +24,30 @@ class Content extends React.Component {
                            }
                   ]
             }
+
          ]
       }
 
    }
+
+
+
+   componentDidMount = () => {
+
+        var newData = ajaxFunctions.ajaxRequest('GET', 'api/getAllPolls',"", this.getData);
+        console.log("22"+ newData);
+   }
+
+
+     getData = (newData) => {
+
+                 console.log("4444"+JSON.parse(newData));
+                 this.setState({data: JSON.parse(newData)});
+
+                
+        }
+
+
 
    render() {
       return (
@@ -72,18 +61,27 @@ class Content extends React.Component {
    }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class PollListItem extends React.Component {
    
         state = { formData: {} }
 
         handleChange = (e, { value }) => this.setState({ value })
 
+        
         handleSubmit = (e, { formData }) => {
+
           e.preventDefault()
           this.setState({ formData })
+          ajaxFunctions.ajaxRequest('POST', 'api/updatePoll',JSON.stringify(formData), this.viewPoll);
+
         }
 
-
+        viewPoll = (data) => {
+                 console.log(data);
+        }
+          
 
 
    render() {
@@ -100,7 +98,7 @@ class PollListItem extends React.Component {
                 
                   <List.Content>
                     <List.Header as='a'>{this.props.componentData.question}</List.Header>
-                    <List.Description as='a'>{this.props.componentData.answers[0].value}</List.Description>
+                    <List.Description as='a'>{this.props.componentData.answers[0].text}</List.Description>
                   </List.Content>
                 
  } closeIcon='close'>
@@ -118,7 +116,16 @@ class PollListItem extends React.Component {
         <p>Put Something Here</p>
                   
                   <Form onSubmit={this.handleSubmit}>
-                     <Form.Select placeholder='Select your Choice' name='choice' options={this.props.componentData.answers} />
+
+                     <input name='pollId' type="hidden" value={this.props.componentData._id}></input>
+                     
+                        <Segment padded>
+                          <Form.Select placeholder='Select your Choice' name='choice' options={this.props.componentData.answers} value={this.props.componentData.answers._id}/>
+                          <Divider horizontal>Or</Divider>
+                          <input placeholder='Or Add Choice' name='newChoice'/>
+                          <input type="hidden" value={this.props.componentData.answers.length} name='choiceValue'/>
+                         </Segment>
+
                              <Button primary type='submit'>Submit</Button>
 
                              <Message>

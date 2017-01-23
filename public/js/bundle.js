@@ -59023,8 +59023,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -59058,8 +59056,6 @@
 	      _this.setState({ formData: formData });
 
 	      ajaxFunctions.ajaxRequest('POST', 'api/addPoll', JSON.stringify(formData), _this.dataView);
-
-	      _this.Form = "";
 	    }, _this.dataView = function (data) {
 	      console.log(data);
 	    }, _this.addItem = function (e) {
@@ -59158,12 +59154,10 @@
 	  _createClass(Choices, [{
 	    key: 'render',
 	    value: function render() {
-	      var _React$createElement;
-
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_semanticUiReact.Form.Checkbox, (_React$createElement = { name: 'choice', label: this.props.componentData.item }, _defineProperty(_React$createElement, 'name', 'choice'), _defineProperty(_React$createElement, 'value', this.props.componentData.item), _defineProperty(_React$createElement, 'checked', true), _React$createElement))
+	        _react2.default.createElement(_semanticUiReact.Form.Checkbox, { label: this.props.componentData.item, name: 'choice', value: this.props.componentData.item, checked: true })
 	      );
 	    }
 	  }]);
@@ -59207,30 +59201,20 @@
 
 	      var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this));
 
+	      _this.componentDidMount = function () {
+
+	         var newData = ajaxFunctions.ajaxRequest('GET', 'api/getAllPolls', "", _this.getData);
+	         console.log("22" + newData);
+	      };
+
+	      _this.getData = function (newData) {
+
+	         console.log("4444" + JSON.parse(newData));
+	         _this.setState({ data: JSON.parse(newData) });
+	      };
+
 	      _this.state = {
 	         data: [{
-	            id: 1,
-	            createdBy: 'abc xyz',
-	            question: 'Dhoni Or Yuvi',
-	            answers: [{
-	               text: 'answer 1',
-	               value: 'Value 1'
-	            }, {
-	               text: 'answer 2',
-	               value: 'vakue 2'
-	            }]
-	         }, {
-	            id: 2,
-	            createdBy: 'def xyz',
-	            question: 'Modi or Kejri ?',
-	            answers: [{
-	               text: 'answer 3',
-	               value: 'vakue 3'
-	            }, {
-	               text: 'answer 4',
-	               value: 'value 4'
-	            }]
-	         }, {
 	            id: 3,
 	            createdBy: 'ghi xyz?',
 	            question: 'Rahul or Chutita',
@@ -59264,6 +59248,8 @@
 	   return Content;
 	}(_react2.default.Component);
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	var PollListItem = function (_React$Component2) {
 	   _inherits(PollListItem, _React$Component2);
 
@@ -59284,8 +59270,12 @@
 	      }, _this2.handleSubmit = function (e, _ref3) {
 	         var formData = _ref3.formData;
 
+
 	         e.preventDefault();
 	         _this2.setState({ formData: formData });
+	         ajaxFunctions.ajaxRequest('POST', 'api/updatePoll', JSON.stringify(formData), _this2.viewPoll);
+	      }, _this2.viewPoll = function (data) {
+	         console.log(data);
 	      }, _temp), _possibleConstructorReturn(_this2, _ret);
 	   }
 
@@ -59313,7 +59303,7 @@
 	                     _react2.default.createElement(
 	                        _semanticUiReact.List.Description,
 	                        { as: 'a' },
-	                        this.props.componentData.answers[0].value
+	                        this.props.componentData.answers[0].text
 	                     )
 	                  ), closeIcon: 'close' },
 	               _react2.default.createElement(
@@ -59349,7 +59339,19 @@
 	                              _react2.default.createElement(
 	                                 _semanticUiReact.Form,
 	                                 { onSubmit: this.handleSubmit },
-	                                 _react2.default.createElement(_semanticUiReact.Form.Select, { placeholder: 'Select your Choice', name: 'choice', options: this.props.componentData.answers }),
+	                                 _react2.default.createElement('input', { name: 'pollId', type: 'hidden', value: this.props.componentData._id }),
+	                                 _react2.default.createElement(
+	                                    _semanticUiReact.Segment,
+	                                    { padded: true },
+	                                    _react2.default.createElement(_semanticUiReact.Form.Select, { placeholder: 'Select your Choice', name: 'choice', options: this.props.componentData.answers, value: this.props.componentData.answers._id }),
+	                                    _react2.default.createElement(
+	                                       _semanticUiReact.Divider,
+	                                       { horizontal: true },
+	                                       'Or'
+	                                    ),
+	                                    _react2.default.createElement('input', { placeholder: 'Or Add Choice', name: 'newChoice' }),
+	                                    _react2.default.createElement('input', { type: 'hidden', value: this.props.componentData.answers.length, name: 'choiceValue' })
+	                                 ),
 	                                 _react2.default.createElement(
 	                                    _semanticUiReact.Button,
 	                                    { primary: true, type: 'submit' },
